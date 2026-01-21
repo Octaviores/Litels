@@ -1,0 +1,45 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Litels"
+run/main_scene="uid://cnashr11y258c"
+config/features=PackedStringArray("4.5", "Forward Plus")
+config/icon="res://icon.svg"
+
+[autoload]
+
+LitelManager="*res://Litels/LitelScripts/litel_manager.gd"
+GameState="*res://World/WorldScripts/GameState.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/size/mode=2
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+
+[layer_names]
+
+2d_physics/layer_1="Player"
+2d_physics/layer_2="Floor"
+2d_physics/layer_3="InvWalls"
+2d_physics/layer_4="Platform"
+2d_physics/layer_5="Ladder"
+2d_physics/layer_6="WorldBoundaries"
+2d_physics/layer_7="Wood"
+2d_physics/layer_8="Food"
+2d_physics/layer_9="Stone"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

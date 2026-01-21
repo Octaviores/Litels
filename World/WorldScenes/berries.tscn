@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://cfgx67snuscm6"]
+
+[ext_resource type="Texture2D" uid="uid://nlkbf6ped5re" path="res://World/WorldMaterials/Bush.png" id="1_dofy4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_evb83"]
+size = Vector2(50, 34)
+
+[node name="Berries" type="StaticBody2D"]
+collision_layer = 128
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_dofy4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-4, 7)
+shape = SubResource("RectangleShape2D_evb83")

@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://crluj356rvrvd"]
+
+[ext_resource type="Script" uid="uid://dceodx08yar6a" path="res://Litels/LitelScripts/litel_spawner.gd" id="1_nyudw"]
+[ext_resource type="PackedScene" uid="uid://hikmqihmbpo5" path="res://Litels/LitelScenes/litel.tscn" id="2_nrdxx"]
+
+[node name="litel_spawner" type="Node2D"]
+script = ExtResource("1_nyudw")
+litel_scene = ExtResource("2_nrdxx")
+
+[node name="SpawnPosition" type="Marker2D" parent="."]
+position = Vector2(-644, -226)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
