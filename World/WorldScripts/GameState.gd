@@ -8,7 +8,7 @@ signal resources_changed(team_id: int, resources: Dictionary)
 signal workers_changed(team_id: int, worker_amount: Dictionary)
 
 var resources_by_team := {
-	0: { "wood": 0, "stone": 0, "food": 0 },
+	0: { "wood": 20, "stone": 20, "food": 20 },
 	1: { "wood": 0, "stone": 0, "food": 0 }
 }
 
@@ -18,15 +18,19 @@ var worker_amount := {
 }
 
 
-#  ========================= LÓGICA DE RECURSOS Y TRABAJADORES =========================	
+
+
+#  ========================= RECURSOS Y TRABAJADORES =========================	
 
 func add_resource(team_id: int, type: String, amount: int) -> void:
 	
 	resources_by_team[team_id][type] += amount
 	resources_changed.emit(team_id, resources_by_team[team_id])
 	
-func get_resources(teamd_id: int) -> Dictionary:
-	return resources_by_team[teamd_id]	
+func get_resources(team_id: int) -> Dictionary:
+	return resources_by_team[team_id]	
+	
+	
 	
 func add_worker(team_id: int, type: String, amount: int) -> void:
 	print(type)
@@ -43,7 +47,7 @@ func get_workers(teamd_id: int) -> Dictionary:
 
 
 
-# ========================= LÓGICA DE CONSUMO DE RECURSOS ========================= 
+# ========================= CONSUMO DE RECURSOS PASIVO ========================= 
 
 #Devuelve true o false dependiendo si puedo pagar los recursos
 func can_pay(team_id: int, r: Dictionary) -> bool:
@@ -53,13 +57,22 @@ func can_pay(team_id: int, r: Dictionary) -> bool:
 
 # Resta los recursos
 func pay(team_id: int, r: Dictionary) -> bool:
+
 	if not can_pay(team_id, r):
 		return false
+
+
 	resources_by_team[team_id].food -= r.get("food", 0)
+	print("Madera inicial: ", resources_by_team[team_id].wood, " y resté: ", r.get("wood"))
 	resources_by_team[team_id].wood -= r.get("wood", 0)
+	print("Madera final: ", resources_by_team[team_id].wood)
 	resources_by_team[team_id].stone -= r.get("stone", 0)
 	resources_changed.emit(team_id, resources_by_team[team_id])
 	return true
 	
+
+
+
+# ========================= CONSUMO DE RECURSOS POR ASIGNACIÓN DE ROL =========================
 	
 	

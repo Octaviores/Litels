@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=4 uid="uid://cnashr11y258c"]
+[gd_scene load_steps=36 format=4 uid="uid://cnashr11y258c"]
 
 [ext_resource type="PackedScene" uid="uid://crluj356rvrvd" path="res://Litels/LitelScenes/litel_spawner.tscn" id="1_a6ja0"]
 [ext_resource type="PackedScene" uid="uid://dui7fb2ckyatq" path="res://World/WorldScenes/Tree.tscn" id="1_nrfxo"]
@@ -658,6 +658,10 @@ region = Rect2(0, 0, 16, 32)
 atlas = ExtResource("20_u57fj")
 region = Rect2(16, 0, 16, 32)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_u57fj"]
+atlas = ExtResource("20_u57fj")
+region = Rect2(32, 0, 16, 32)
+
 [node name="World1" type="Node2D"]
 position = Vector2(-512, -64)
 
@@ -795,7 +799,7 @@ theme_override_constants/margin_left = 10
 [node name="HResCostContainer" type="HBoxContainer" parent="CanvasLayer/ControlRoles/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_constants/separation = 35
+theme_override_constants/separation = 42
 
 [node name="HLumbResContainer" type="HBoxContainer" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer"]
 layout_mode = 2
@@ -817,7 +821,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
 theme_override_font_sizes/font_size = 17
-text = "10"
+text = "0"
 
 [node name="LumbStoneCostLabel" type="Label" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HLumbResContainer/VLumbLabelsContainer"]
 layout_mode = 2
@@ -825,7 +829,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
-text = "15"
+text = "0"
 
 [node name="HGathResContainer" type="HBoxContainer" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer"]
 layout_mode = 2
@@ -846,7 +850,7 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
-text = "5"
+text = "0"
 
 [node name="GathWoodCostLabel" type="Label" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HGathResContainer/VGathLabelsContainer"]
 layout_mode = 2
@@ -854,7 +858,36 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/shadow_offset_x = 2
 theme_override_constants/shadow_offset_y = 2
-text = "10"
+text = "0"
+
+[node name="HMinerResContainer" type="HBoxContainer" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="MinerResTexture" type="TextureRect" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HMinerResContainer"]
+custom_minimum_size = Vector2(40, 0)
+layout_mode = 2
+texture = SubResource("AtlasTexture_u57fj")
+
+[node name="HMinerLabelsContainer" type="VBoxContainer" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HMinerResContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="MinerStoneCostLabel" type="Label" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HMinerResContainer/HMinerLabelsContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+text = "0"
+
+[node name="MinerFoodCostLabel" type="Label" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HMinerResContainer/HMinerLabelsContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+text = "0"
 
 [node name="ControlRectUnits" type="Control" parent="CanvasLayer"]
 layout_mode = 3

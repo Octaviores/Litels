@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 
 LitelManager="*res://Litels/LitelScripts/litel_manager.gd"
 GameState="*res://World/WorldScripts/GameState.gd"
+RoleManager="*res://Litels/LitelScripts/LitelsRolesRecursos/RoleManager.gd"
+RolesCost="*res://Litels/LitelScripts/LitelsRolesRecursos/RolesCost.gd"
 
 [display]
 

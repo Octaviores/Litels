@@ -1,0 +1,15 @@
+extends Node
+#Script que se encarga de asignar roles según el costo en "RolesCost"
+const Roles = preload("res://LitelsUI/LitelsUIScript/roles.gd")
+
+var current_role: Roles.Role = Roles.Role.NONE
+
+@export var local_team_id: int = 0
+
+
+func assign_role(role_id: int, litels: Array) -> void:
+	for unit in litels:
+		if unit.current_role == role_id:
+			unit.set_role(Roles.Role.NONE)
+		elif GameState.pay(local_team_id, RolesCost.get_roles_costs(role_id)):
+			unit.set_role(role_id)

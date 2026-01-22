@@ -38,6 +38,7 @@ func _ready():
 	
 
 
+
 func _on_resources_changed(team_id: int, r: Dictionary) -> void:        #refresca los recursos
 	if team_id != local_team_id:
 		return
