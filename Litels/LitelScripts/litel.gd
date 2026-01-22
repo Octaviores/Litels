@@ -3,16 +3,17 @@ extends TeamUnit
 
 #esperara a estar listos
 @onready var wall_sensor: RayCast2D = $WallSensor
+@onready var resource_sensor: RayCast2D = $ResourceSensor
+
 @onready var ladder_ajustment_component: Node = $LadderAjustmentComponent
+@onready var role_component: Node = $RoleComponent
+
 @onready var ladder_tilemap: TileMapLayer = null
 
 @onready var litel_animations: AnimatedSprite2D = $LitelAnimations
 @onready var arrows_animation: AnimationPlayer = $ArrowsAnimation
 @onready var selection_sprite: Sprite2D = $SelectionSprite
 @onready var hungry_sprite: Sprite2D = $HungrySprite
-
-@onready var resource_sensor: RayCast2D = $ResourceSensor
-@onready var work_timer: Timer = $WorkTimer
 
 
 #movimiento X e Y
@@ -29,30 +30,17 @@ var is_climbing = false
 
 #Cargo los roles
 const Roles = preload("res://LitelsUI/LitelsUIScript/roles.gd")
-var current_role: Roles.Role = Roles.Role.NONE
-
 
 #Roles
 var resource_role := ResourceRole.new()
 
-
 #Estados del litel para trabajar y caminar
 enum State { WALK, WORK, WAIT }
 var state: State = State.WALK
-var work_target: Node = null
-var counted_as_lumberjack_worker := false
-var counted_as_gatherer_worker := false
-var counted_as_miner_worker := false
-var escape_to_surface := false
 
 
 #Estados del litel para consumo de recursos
 var hungry := false
-
-
-#Await entre estados WORK, WALK y WAIT
-var stop_work_pending := false
-var rand_time_state = randf_range(0.0, 0.7)
 
 
 #Variables para manejar colisiones con los recursos
@@ -61,6 +49,8 @@ var food_layer := 8
 var stone_layer := 9
 
 
+#Await entre estados WORK, WALK y WAIT
+var rand_time_state = randf_range(0.0, 0.7)
 
 
 func _ready():
@@ -68,7 +58,6 @@ func _ready():
 	# Manejar selecciónde litels,escaleras y recolección de recursos.
 	add_to_group("Unit")
 	ladder_tilemap = get_tree().get_first_node_in_group("ladder") as TileMapLayer
-	work_timer.timeout.connect(_on_work_resources)
 	
 	#Timer para que cada litel consuma recursos
 	var t := Timer.new()
@@ -78,11 +67,7 @@ func _ready():
 	add_child(t)
 	t.timeout.connect(_on_food_tick)
 	
-	
-	
-	
-	
-	
+
 	
 	
 	
@@ -91,11 +76,12 @@ func _ready():
 
 func _physics_process(delta: float) -> void:
 	var anim_to_play := "litel_idle"
+	var current_role : int = role_component.current_role
 
 	if is_climbing:
 		velocity.x = 0
 		var climb_dir := -1.0
-		if escape_to_surface:
+		if role_component.escape_to_surface:
 			climb_dir = -1.0
 		else:
 			# lógica normal
@@ -110,7 +96,7 @@ func _physics_process(delta: float) -> void:
 			Roles.Role.GATHERER: anim_to_play = "gatherer_ladder"
 			Roles.Role.MINER: anim_to_play = "miner_ladder"
 			_: 
-				if 	escape_to_surface:
+				if 	role_component.escape_to_surface:
 					anim_to_play = "litel_ladder"
 				else:
 					anim_to_play = "litel_walk"
@@ -146,9 +132,9 @@ func _physics_process(delta: float) -> void:
 				anim_to_play = "miner_work" if (state == State.WORK) else "miner_walk"
 
 			if desired != null:
-				start_work(desired)
+				role_component.start_work(desired)
 			else:
-				stop_work(rand_time_state)
+				role_component.stop_work(rand_time_state)
 		else: 
 				anim_to_play = "litel_walk"
 
@@ -158,8 +144,8 @@ func _physics_process(delta: float) -> void:
 	if is_climbing and current_role == Roles.Role.MINER and is_on_floor():
 		exited_ladder()
 	
-	if escape_to_surface and global_position.y <= -256:
-		escape_to_surface = false
+	if role_component.escape_to_surface and global_position.y <= -256:
+		role_component.escape_to_surface = false
 		exited_ladder()
 
 
@@ -193,6 +179,7 @@ func entered_ladder():
 	
 #Si no está en la escalera, activo la colisión con la plataforma
 func exited_ladder():
+	var current_role : int = role_component.current_role
 	if not is_climbing:
 		return
 	
@@ -236,10 +223,10 @@ func _update_ladder_state():
 		return
 		
 
-	
+	var current_role : int = role_component.current_role
 	if ladder_role == current_role:
 		entered_ladder()
-	elif current_role != Roles.Role.MINER and escape_to_surface:
+	elif current_role != Roles.Role.MINER and role_component.escape_to_surface:
 		entered_ladder()
 	else:
 		return
@@ -294,138 +281,6 @@ func _unhandled_input(event):
 		
 		
 		
-
-# ========================= LÓGICA DE ROLES =========================
-
-#Manejador de Roles
-func set_role(new_role: Roles.Role) -> void:
-	if current_role == new_role:
-		return
-
-	# si estaba trabajando, paro siempre al cambiar rol
-	stop_work(rand_time_state)
-
-	if current_role == Roles.Role.MINER and new_role != Roles.Role.MINER:
-		escape_to_surface = true
-
-	
-	
-	current_role = new_role
-	
-	_apply_role_mask(current_role)
-
-	#resource_sensor.enabled = (current_role == Roles.Role.LUMBERJACK)
-	resource_sensor.force_raycast_update()
-
-
-func _apply_role_mask(role: Roles.Role) -> void:
-	# apago todas
-	resource_sensor.set_collision_mask_value(7, false)
-	resource_sensor.set_collision_mask_value(8, false)
-	resource_sensor.set_collision_mask_value(9, false)
-
-	# prendo la correspondiente
-	match role:
-		Roles.Role.LUMBERJACK: resource_sensor.set_collision_mask_value(7, true)
-		Roles.Role.GATHERER:   resource_sensor.set_collision_mask_value(8, true)
-		Roles.Role.MINER:      resource_sensor.set_collision_mask_value(9, true)
-
-			
-#Sumador de recolección de recursos
-func _on_work_resources():
-	if state != State.WORK:
-		return
-
-	#Rol Lumberjack
-	match current_role:
-		Roles.Role.LUMBERJACK: GameState.add_resource(team_id, "wood", 1)
-		Roles.Role.GATHERER: GameState.add_resource(team_id, "food", 1)
-		Roles.Role.MINER: GameState.add_resource(team_id, "stone", 1)
-		
-	
-
-#Sumador de cantidad de trabajadores
-func workers_count():
-	var working := state == State.WORK
-	
-	match current_role:
-		Roles.Role.LUMBERJACK:
-
-			if working and not counted_as_lumberjack_worker :
-				GameState.add_worker(team_id, "Lumberjack", 1)
-				counted_as_lumberjack_worker = true
-			elif not working and counted_as_lumberjack_worker:
-				GameState.add_worker(team_id, "Lumberjack", -1)
-				counted_as_lumberjack_worker = false
-		
-		Roles.Role.GATHERER:
-
-			if working and not counted_as_gatherer_worker :
-				GameState.add_worker(team_id, "Gatherer", 1)
-				counted_as_gatherer_worker = true
-			elif not working and counted_as_gatherer_worker:
-				GameState.add_worker(team_id, "Gatherer", -1)
-				counted_as_gatherer_worker = false
-				
-		Roles.Role.MINER:
-
-			if working and not counted_as_miner_worker :
-				GameState.add_worker(team_id, "Miner", 1)
-				counted_as_miner_worker = true
-			elif not working and counted_as_miner_worker:
-				GameState.add_worker(team_id, "Miner", -1)
-				counted_as_miner_worker = false
-
-#Empieza a trabajar, activa contadores
-func start_work(target: Node) -> void:
-	if state == State.WORK and work_target == target:
-		return
-
-	
-	state = State.WORK
-	work_target = target
-
-	timer_enter_work()
-	workers_count() 
-
-
-#Termina de trabajar, finalizaco contadores
-func stop_work(delay: float) -> void:
-	if state != State.WORK:
-		return
-	if stop_work_pending:
-		return
-
-
-		
-	state = State.WAIT          # deja de estar "trabajando" pero todavía no camina
-	work_target = null
-	timer_exit_work()
-	workers_count()
-	
-	stop_work_pending = true
-	if delay > 0.0:
-		await get_tree().create_timer(delay).timeout
-	stop_work_pending = false
-
-	if state != State.WAIT:   #por si durante el await volvió a WORK por alguna razón
-		return
-		
-	state = State.WALK
-
-	
-
-#Inicio del temporizador para esperar 1 segundo para ir sumando 1 de recurso
-func timer_enter_work():
-	if work_timer.is_stopped():
-		work_timer.start(1.0)
-
-
-#Finalización del temporizador
-func timer_exit_work():
-	if not work_timer.is_stopped():
-		work_timer.stop()
-
 
 
 

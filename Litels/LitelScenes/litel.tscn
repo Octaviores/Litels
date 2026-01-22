@@ -1,4 +1,4 @@
-[gd_scene load_steps=112 format=3 uid="uid://hikmqihmbpo5"]
+[gd_scene load_steps=113 format=3 uid="uid://hikmqihmbpo5"]
 
 [ext_resource type="Texture2D" uid="uid://dr5was5im08co" path="res://Litels/LitelMaterials/DF_litel_walk.png" id="1_a472l"]
 [ext_resource type="Script" uid="uid://c5ighxm41tk1c" path="res://Litels/LitelScripts/litel.gd" id="1_ot1h5"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://bkrguwjkhyvi7" path="res://Litels/LitelMaterials/Miner/DF_little_miner_walk.png" id="11_cy5hn"]
 [ext_resource type="Texture2D" uid="uid://dqar70e4k5loh" path="res://Litels/LitelMaterials/Miner/DF_Miner_work.png" id="12_srsgg"]
 [ext_resource type="Texture2D" uid="uid://dbqpigflcyej1" path="res://Litels/LitelMaterials/States/HungryArrow.png" id="14_srsgg"]
+[ext_resource type="Script" uid="uid://nnnee6xiy4ne" path="res://Litels/LitelScripts/role_component.gd" id="16_uiw8g"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r2mqt"]
 size = Vector2(12, 18)
@@ -54,22 +55,6 @@ tracks/1/keys = {
 "values": [Vector2(7, -10)]
 }
 
-[sub_resource type="Animation" id="Animation_q2m8i"]
-resource_name = "litel_selected"
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("SelectionSprite:position")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(0, -21), Vector2(0, -27), Vector2(0, -21)]
-}
-
 [sub_resource type="Animation" id="Animation_uiw8g"]
 resource_name = "hungry_arrow"
 loop_mode = 1
@@ -84,6 +69,22 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(7, -10), Vector2(7, -3)]
+}
+
+[sub_resource type="Animation" id="Animation_q2m8i"]
+resource_name = "litel_selected"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SelectionSprite:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, -21), Vector2(0, -27), Vector2(0, -21)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_r2mqt"]
@@ -827,6 +828,11 @@ texture = ExtResource("14_srsgg")
 [node name="LadderAjustmentComponent" type="Node" parent="." node_paths=PackedStringArray("litel")]
 script = ExtResource("3_8e0xl")
 litel = NodePath("..")
+
+[node name="WorkComponent" type="Node" parent="."]
+
+[node name="RoleComponent" type="Node" parent="."]
+script = ExtResource("16_uiw8g")
 
 [node name="WorkTimer" type="Timer" parent="."]
 
