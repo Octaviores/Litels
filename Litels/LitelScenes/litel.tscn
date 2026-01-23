@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dr5was5im08co" path="res://Litels/LitelMaterials/DF_litel_walk.png" id="1_a472l"]
 [ext_resource type="Script" uid="uid://c5ighxm41tk1c" path="res://Litels/LitelScripts/litel.gd" id="1_ot1h5"]
 [ext_resource type="Texture2D" uid="uid://c5arrmevx8dio" path="res://Litels/LitelMaterials/Gatherer/DF_Gatherer_ladder.png" id="3_3tfuj"]
-[ext_resource type="Script" uid="uid://bj7vuaa7ektvq" path="res://Litels/LitelScripts/ladder_ajustment_component.gd" id="3_8e0xl"]
+[ext_resource type="Script" uid="uid://bj7vuaa7ektvq" path="res://Litels/LitelScripts/ladder_component.gd" id="3_8e0xl"]
 [ext_resource type="Texture2D" uid="uid://cwkg3ig5hjjfg" path="res://Litels/LitelMaterials/Gatherer/DF_little_gatherer_walk.png" id="4_vuaak"]
 [ext_resource type="Texture2D" uid="uid://qrd6ly082s6w" path="res://Litels/LitelMaterials/Gatherer/DF_Gatherer_work.png" id="5_7dw1w"]
 [ext_resource type="Texture2D" uid="uid://b2eshpklnxnqk" path="res://Litels/LitelMaterials/Lumberjack/DF_litel_lumberjack_chopping.png" id="5_jeup3"]
@@ -825,9 +825,8 @@ position = Vector2(7, -10)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("14_srsgg")
 
-[node name="LadderAjustmentComponent" type="Node" parent="." node_paths=PackedStringArray("litel")]
+[node name="LadderComponent" type="Node" parent="."]
 script = ExtResource("3_8e0xl")
-litel = NodePath("..")
 
 [node name="WorkComponent" type="Node" parent="."]
 
@@ -837,6 +836,5 @@ script = ExtResource("16_uiw8g")
 [node name="WorkTimer" type="Timer" parent="."]
 
 [connection signal="input_event" from="." to="." method="_on_input_event"]
-[connection signal="body_entered" from="PlayerArea" to="." method="_on_player_area_body_entered"]
-[connection signal="body_exited" from="PlayerArea" to="." method="_on_player_area_body_exited"]
-[connection signal="input_event" from="PlayerArea" to="." method="_on_player_area_input_event"]
+[connection signal="body_entered" from="PlayerArea" to="LadderComponent" method="_on_player_area_body_entered"]
+[connection signal="body_exited" from="PlayerArea" to="LadderComponent" method="_on_player_area_body_exited"]

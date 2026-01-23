@@ -5,10 +5,9 @@ extends TeamUnit
 @onready var wall_sensor: RayCast2D = $WallSensor
 @onready var resource_sensor: RayCast2D = $ResourceSensor
 
-@onready var ladder_ajustment_component: Node = $LadderAjustmentComponent
 @onready var role_component: Node = $RoleComponent
+@onready var ladder_component: Node = $LadderComponent
 
-@onready var ladder_tilemap: TileMapLayer = null
 
 @onready var litel_animations: AnimatedSprite2D = $LitelAnimations
 @onready var arrows_animation: AnimationPlayer = $ArrowsAnimation
@@ -25,7 +24,6 @@ const CLIMB_SPEED = 50
 
 #Para cambiar dirección de movimiento X e Y
 var moving_right = true
-var is_climbing = false
 
 
 #Cargo los roles
@@ -57,7 +55,7 @@ func _ready():
 	
 	# Manejar selecciónde litels,escaleras y recolección de recursos.
 	add_to_group("Unit")
-	ladder_tilemap = get_tree().get_first_node_in_group("ladder") as TileMapLayer
+
 	
 	#Timer para que cada litel consuma recursos
 	var t := Timer.new()
@@ -71,14 +69,13 @@ func _ready():
 	
 	
 	
-	
 # ========================= LÓGICA DE MOVIMIENTO GENERAL =========================
 
 func _physics_process(delta: float) -> void:
 	var anim_to_play := "litel_idle"
 	var current_role : int = role_component.current_role
 
-	if is_climbing:
+	if ladder_component.is_climbing:
 		velocity.x = 0
 		var climb_dir := -1.0
 		if role_component.escape_to_surface:
@@ -100,7 +97,7 @@ func _physics_process(delta: float) -> void:
 					anim_to_play = "litel_ladder"
 				else:
 					anim_to_play = "litel_walk"
-					exited_ladder()
+					ladder_component.exited_ladder()
 	else:
 		if not is_on_floor():
 			velocity += get_gravity() * delta
@@ -141,12 +138,14 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-	if is_climbing and current_role == Roles.Role.MINER and is_on_floor():
-		exited_ladder()
+	if ladder_component.is_climbing and current_role == Roles.Role.MINER and is_on_floor():
+		ladder_component.exited_ladder()
+		print("salí")
 	
 	if role_component.escape_to_surface and global_position.y <= -256:
 		role_component.escape_to_surface = false
-		exited_ladder()
+		ladder_component.exited_ladder()
+		
 
 
 	if litel_animations.animation != anim_to_play:
@@ -161,85 +160,6 @@ func turn():
 	
 	
 	
-	
-	
-	
-	
-	
-	
-# ========================= LÓGICA DE LA ESCALERA =========================	
-
-
-#Si está en la escalera, desactivo la colisión con la plataforma
-func entered_ladder():
-	is_climbing = true
-	ladder_ajustment_component.up_climbing()
-
-	
-	
-#Si no está en la escalera, activo la colisión con la plataforma
-func exited_ladder():
-	var current_role : int = role_component.current_role
-	if not is_climbing:
-		return
-	
-	is_climbing = false
-	ladder_ajustment_component.up_not_climbing()
-	if current_role == Roles.Role.LUMBERJACK and moving_right:
-		turn()
-	if current_role == Roles.Role.GATHERER and !moving_right:
-		turn()
-	if current_role == Roles.Role.MINER and moving_right:
-		turn()
-	
-#Detecta si el Litel está en un escalera
-func _on_player_area_body_entered(body: Node2D) -> void:
-	if body.is_in_group("ladder"):
-		_update_ladder_state()
-
-
-#Detecta si el Litel no está en la escalera	
-func _on_player_area_body_exited(body: Node2D) -> void:
-	if body.is_in_group("ladder"):
-		exited_ladder()
-
-
-#Función para obtener el ladder_role de una escalera
-func _update_ladder_state():
-
-	# Obtengo la posición local del Litel y del Tile donde se encuentra
-	var cell := ladder_tilemap.local_to_map(
-		ladder_tilemap.to_local(global_position)
-	)
-
-	# Obtengo los datos del Tile, sino, null
-	var tile_data := ladder_tilemap.get_cell_tile_data(cell)
-	if tile_data == null:
-		return
-
-	# Obtengo el valor del CustomDataLayer "ladder_role"
-	var ladder_role: int = int(tile_data.get_custom_data("ladder_role"))
-	if ladder_role == null:
-		return
-		
-
-	var current_role : int = role_component.current_role
-	if ladder_role == current_role:
-		entered_ladder()
-	elif current_role != Roles.Role.MINER and role_component.escape_to_surface:
-		entered_ladder()
-	else:
-		return
-
-
-
-
-
-
-
-
-
-
 
 # ========================= LÓGICA DE SELECCIÓN DE LITELS =========================
 
@@ -261,7 +181,7 @@ func deselect():            # Deselecciono una unidad
 	select_mode = false
 
 #Elegir 1 solo Litel
-func _on_input_event(viewport, event, shape_idx):
+func _on_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			select_mode = true
@@ -276,17 +196,7 @@ func _unhandled_input(event):
 		LitelManager.clear_selection() # click en vacío 
 		
 		
-		
-		
-		
-		
-		
-
-
-
-
-
-
+	
 
 
 

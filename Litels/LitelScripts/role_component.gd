@@ -3,6 +3,7 @@ extends Node
 const Roles = preload("res://LitelsUI/LitelsUIScript/roles.gd")
 
 @onready var work_timer: Timer = $"../WorkTimer"
+@onready var litel := get_parent()
 
 var current_role: int = Roles.Role.NONE
 
@@ -18,8 +19,7 @@ var counted_as_gatherer_worker := false
 var counted_as_miner_worker := false
 var work_target: Node = null
 
-@onready var litel := get_parent()
-
+signal role_changed(old_role: int, new_role: int)
 
 func _ready():
 	
@@ -36,6 +36,7 @@ func set_role(new_role: Roles.Role) -> void:
 	if current_role == new_role:
 		return
 
+	var old := current_role
 	# si estaba trabajando, paro siempre al cambiar rol
 	stop_work(rand_time_state)
 
@@ -48,9 +49,9 @@ func set_role(new_role: Roles.Role) -> void:
 	
 	_apply_role_mask(current_role)
 
-	#resource_sensor.enabled = (current_role == Roles.Role.LUMBERJACK)
-	litel.resource_sensor.force_raycast_update()
 
+	litel.resource_sensor.force_raycast_update()
+	role_changed.emit(old, current_role)
 
 func _apply_role_mask(role: Roles.Role) -> void:
 	# apago todas

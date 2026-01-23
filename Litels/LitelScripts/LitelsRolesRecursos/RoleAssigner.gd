@@ -2,7 +2,7 @@ extends Node
 #Script que se encarga de asignar roles según el costo en "RolesCost"
 const Roles = preload("res://LitelsUI/LitelsUIScript/roles.gd")
 
-var current_role: Roles.Role = Roles.Role.NONE
+
 
 @export var local_team_id: int = 0
 

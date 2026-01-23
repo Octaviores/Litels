@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=4 uid="uid://cnashr11y258c"]
+[gd_scene load_steps=37 format=4 uid="uid://cnashr11y258c"]
 
 [ext_resource type="PackedScene" uid="uid://crluj356rvrvd" path="res://Litels/LitelScenes/litel_spawner.tscn" id="1_a6ja0"]
 [ext_resource type="PackedScene" uid="uid://dui7fb2ckyatq" path="res://World/WorldScenes/Tree.tscn" id="1_nrfxo"]
@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://cfgx67snuscm6" path="res://World/WorldScenes/berries.tscn" id="20_5mc1j"]
 [ext_resource type="Texture2D" uid="uid://d1ac1g0r6n1xt" path="res://LitelsUI/LitelsUIMaterial/LitelsMisc/RescourcePrice.png" id="20_u57fj"]
 [ext_resource type="Texture2D" uid="uid://d4fh0gkd3yqax" path="res://Resources/ResourceUIMaterials/DF_Stone.png" id="21_n1ddy"]
+[ext_resource type="Texture2D" uid="uid://c63mxh5a3b1nj" path="res://Resources/ResourceUIMaterials/background.png" id="23_n1ddy"]
 [ext_resource type="Texture2D" uid="uid://brnec2o61u7er" path="res://Resources/ResourceUIMaterials/DF_Miners.png" id="24_bernc"]
 [ext_resource type="PackedScene" uid="uid://bd27dtksaos6a" path="res://World/WorldScenes/stone.tscn" id="26_jy60l"]
 
@@ -794,24 +795,29 @@ anchor_bottom = 1.0
 offset_top = -63.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 theme_override_constants/margin_left = 10
 
 [node name="HResCostContainer" type="HBoxContainer" parent="CanvasLayer/ControlRoles/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
+mouse_filter = 2
 theme_override_constants/separation = 42
 
 [node name="HLumbResContainer" type="HBoxContainer" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 10
 
 [node name="LumbResTexture" type="TextureRect" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HLumbResContainer"]
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
+mouse_filter = 2
 texture = SubResource("AtlasTexture_n1ddy")
 
 [node name="VLumbLabelsContainer" type="VBoxContainer" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HLumbResContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 11
 
 [node name="LumbWoodCostLabel" type="Label" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HLumbResContainer/VLumbLabelsContainer"]
@@ -833,15 +839,18 @@ text = "0"
 
 [node name="HGathResContainer" type="HBoxContainer" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 10
 
 [node name="GathResTexture" type="TextureRect" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HGathResContainer"]
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
+mouse_filter = 2
 texture = SubResource("AtlasTexture_bernc")
 
 [node name="VGathLabelsContainer" type="VBoxContainer" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HGathResContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 12
 
 [node name="GathFoodCostLabel" type="Label" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HGathResContainer/VGathLabelsContainer"]
@@ -862,15 +871,18 @@ text = "0"
 
 [node name="HMinerResContainer" type="HBoxContainer" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 10
 
 [node name="MinerResTexture" type="TextureRect" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HMinerResContainer"]
 custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
+mouse_filter = 2
 texture = SubResource("AtlasTexture_u57fj")
 
 [node name="HMinerLabelsContainer" type="VBoxContainer" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HMinerResContainer"]
 layout_mode = 2
+mouse_filter = 2
 theme_override_constants/separation = 12
 
 [node name="MinerStoneCostLabel" type="Label" parent="CanvasLayer/ControlRoles/MarginContainer/HResCostContainer/HMinerResContainer/HMinerLabelsContainer"]
@@ -905,25 +917,20 @@ grow_horizontal = 2
 scale = Vector2(1.7, 1.7)
 script = ExtResource("12_xp4rh")
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/ControlResources"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.36078432, 0.2, 0.12941177, 1)
-
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ControlResources"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_right = -1340.5881
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 25
 theme_override_constants/margin_right = 25
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ControlResources/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("23_n1ddy")
 
 [node name="HhudContainer" type="HBoxContainer" parent="CanvasLayer/ControlResources/MarginContainer"]
 layout_mode = 2

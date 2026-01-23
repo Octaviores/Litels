@@ -33,7 +33,6 @@ func get_resources(team_id: int) -> Dictionary:
 	
 	
 func add_worker(team_id: int, type: String, amount: int) -> void:
-	print(type)
 	worker_amount[team_id][type] += amount
 	workers_changed.emit(team_id, worker_amount[team_id])
 	
@@ -63,10 +62,9 @@ func pay(team_id: int, r: Dictionary) -> bool:
 
 
 	resources_by_team[team_id].food -= r.get("food", 0)
-	print("Madera inicial: ", resources_by_team[team_id].wood, " y resté: ", r.get("wood"))
 	resources_by_team[team_id].wood -= r.get("wood", 0)
-	print("Madera final: ", resources_by_team[team_id].wood)
 	resources_by_team[team_id].stone -= r.get("stone", 0)
+	
 	resources_changed.emit(team_id, resources_by_team[team_id])
 	return true
 	
