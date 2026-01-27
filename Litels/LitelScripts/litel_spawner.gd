@@ -1,28 +1,33 @@
 extends Node2D
 
 @export var litel_scene: PackedScene
+
+
 @onready var spawn_position: Marker2D = $SpawnPosition
-@onready var spawn_timer: Timer = $SpawnTimer
+@onready var timer_spawn: Timer = $TimerSpawn
 
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
+var is_building := true
 
+func _ready():
+	timer_spawn.stop() #Que no spawnee litels mientras se construye
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
+func finalize_building() -> void:
 	
-	pass
+	is_building = false
 
 
-func _on_spawn_timer_timeout() -> void:
-	
+	timer_spawn.start()
+
+
+
+
+func _on_timer_spawn_timeout() -> void:
+	if is_building:
+		return
+
 	var litel := litel_scene.instantiate()
-	print("litel: ", litel)
 	get_parent().add_child(litel)
 	litel.global_position = spawn_position.global_position
-	print("posición: ", litel.global_position)
-
-		
+	litel.velocity.y = -200

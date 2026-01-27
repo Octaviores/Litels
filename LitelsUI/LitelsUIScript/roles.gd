@@ -1,9 +1,10 @@
 
-#Este script tiene los Roles del Litel
+#Este script tiene los Roles del Litel. Separado por su uso en múltiples scripts
 
 enum Role {
 	NONE = 0,
-	LUMBERJACK = 1,     # leñador
-	GATHERER = 2,     # recolector
-	MINER = 3         # minero
+	LUMBERJACK = 1,    
+	GATHERER = 2,   
+	MINER = 3,     
+	BUILDER = 4
 }

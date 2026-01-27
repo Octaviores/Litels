@@ -9,7 +9,6 @@ var selection_rect : Rect2         # Para guardar el cuadro de seleccion
 var width = 0                     # Ancho de las lineas del cuadro
 
 
-
 #Función para limpiar dibujos viejos y crear nuevos
 func _draw():
 	var rect_position = start_position               # Posicion inicial del cuadro
@@ -27,7 +26,12 @@ func _draw():
 
 
 
-func _input(event):
+func _unhandled_input(event: InputEvent) -> void:
+	
+	var hovered := get_viewport().gui_get_hovered_control()
+	if hovered != null:
+		return
+	
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:  # Click izquierdo activa el dibujado y setea el ancho de los bordes
 			width = 2

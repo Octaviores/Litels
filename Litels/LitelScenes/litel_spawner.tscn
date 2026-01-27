@@ -8,10 +8,8 @@ script = ExtResource("1_nyudw")
 litel_scene = ExtResource("2_nrdxx")
 
 [node name="SpawnPosition" type="Marker2D" parent="."]
-position = Vector2(-644, -226)
 
-[node name="SpawnTimer" type="Timer" parent="."]
-wait_time = 30.0
-autostart = true
+[node name="TimerSpawn" type="Timer" parent="."]
+wait_time = 2.0
 
-[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="TimerSpawn" to="." method="_on_timer_spawn_timeout"]

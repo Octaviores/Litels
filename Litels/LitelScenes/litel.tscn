@@ -1,9 +1,12 @@
-[gd_scene load_steps=113 format=3 uid="uid://hikmqihmbpo5"]
+[gd_scene load_steps=135 format=3 uid="uid://hikmqihmbpo5"]
 
 [ext_resource type="Texture2D" uid="uid://dr5was5im08co" path="res://Litels/LitelMaterials/DF_litel_walk.png" id="1_a472l"]
 [ext_resource type="Script" uid="uid://c5ighxm41tk1c" path="res://Litels/LitelScripts/litel.gd" id="1_ot1h5"]
 [ext_resource type="Texture2D" uid="uid://c5arrmevx8dio" path="res://Litels/LitelMaterials/Gatherer/DF_Gatherer_ladder.png" id="3_3tfuj"]
 [ext_resource type="Script" uid="uid://bj7vuaa7ektvq" path="res://Litels/LitelScripts/ladder_component.gd" id="3_8e0xl"]
+[ext_resource type="Texture2D" uid="uid://b8ytsgq73khol" path="res://Litels/LitelMaterials/Builder/DF_litel_builder_walk.png" id="3_mosq5"]
+[ext_resource type="Texture2D" uid="uid://bm57r0wqc10qu" path="res://LitelsUI/LitelsUIMaterial/LitelsMisc/litels_building.png" id="4_36iv3"]
+[ext_resource type="Texture2D" uid="uid://dhfwil6q1hj77" path="res://Litels/LitelMaterials/Builder/DF_litel_builder_work.png" id="4_t2dbf"]
 [ext_resource type="Texture2D" uid="uid://cwkg3ig5hjjfg" path="res://Litels/LitelMaterials/Gatherer/DF_little_gatherer_walk.png" id="4_vuaak"]
 [ext_resource type="Texture2D" uid="uid://qrd6ly082s6w" path="res://Litels/LitelMaterials/Gatherer/DF_Gatherer_work.png" id="5_7dw1w"]
 [ext_resource type="Texture2D" uid="uid://b2eshpklnxnqk" path="res://Litels/LitelMaterials/Lumberjack/DF_litel_lumberjack_chopping.png" id="5_jeup3"]
@@ -16,6 +19,8 @@
 [ext_resource type="Texture2D" uid="uid://dqar70e4k5loh" path="res://Litels/LitelMaterials/Miner/DF_Miner_work.png" id="12_srsgg"]
 [ext_resource type="Texture2D" uid="uid://dbqpigflcyej1" path="res://Litels/LitelMaterials/States/HungryArrow.png" id="14_srsgg"]
 [ext_resource type="Script" uid="uid://nnnee6xiy4ne" path="res://Litels/LitelScripts/role_component.gd" id="16_uiw8g"]
+[ext_resource type="Script" uid="uid://esbdabqb174f" path="res://Buildings/BuildingsScripts/builder_component.gd" id="19_t2dbf"]
+[ext_resource type="Script" uid="uid://dp7ehl6fb732s" path="res://Buildings/BuildingsScripts/BuildingTileData.gd" id="21_hsu6w"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_r2mqt"]
 size = Vector2(12, 18)
@@ -54,6 +59,18 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector2(7, -10)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BuildingSprite:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-1, -21)]
+}
 
 [sub_resource type="Animation" id="Animation_uiw8g"]
 resource_name = "hungry_arrow"
@@ -87,12 +104,93 @@ tracks/0/keys = {
 "values": [Vector2(0, -21), Vector2(0, -27), Vector2(0, -21)]
 }
 
+[sub_resource type="Animation" id="Animation_52kvu"]
+resource_name = "litels_building"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BuildingSprite:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-1, -21), Vector2(-1, -26), Vector2(-1, -21)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_r2mqt"]
 _data = {
 &"RESET": SubResource("Animation_d71uk"),
 &"hungry_arrow": SubResource("Animation_uiw8g"),
-&"litel_selected": SubResource("Animation_q2m8i")
+&"litel_selected": SubResource("Animation_q2m8i"),
+&"litels_building": SubResource("Animation_52kvu")
 }
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hjqib"]
+atlas = ExtResource("3_mosq5")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_84lda"]
+atlas = ExtResource("3_mosq5")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2jirk"]
+atlas = ExtResource("3_mosq5")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7tpoj"]
+atlas = ExtResource("3_mosq5")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qgpx7"]
+atlas = ExtResource("3_mosq5")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_laxpu"]
+atlas = ExtResource("3_mosq5")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5bpxx"]
+atlas = ExtResource("3_mosq5")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x2xrn"]
+atlas = ExtResource("3_mosq5")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gsrhm"]
+atlas = ExtResource("4_t2dbf")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_867yh"]
+atlas = ExtResource("4_t2dbf")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_38mdi"]
+atlas = ExtResource("4_t2dbf")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p4pq6"]
+atlas = ExtResource("4_t2dbf")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k5uyl"]
+atlas = ExtResource("4_t2dbf")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8uy56"]
+atlas = ExtResource("4_t2dbf")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r5rnh"]
+atlas = ExtResource("4_t2dbf")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uquno"]
+atlas = ExtResource("4_t2dbf")
+region = Rect2(224, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ljt1n"]
 atlas = ExtResource("3_3tfuj")
@@ -448,6 +546,64 @@ region = Rect2(224, 0, 32, 32)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ikjmv"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hjqib")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_84lda")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2jirk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7tpoj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qgpx7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_laxpu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5bpxx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x2xrn")
+}],
+"loop": true,
+"name": &"builder_walk",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gsrhm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_867yh")
+}, {
+"duration": 0.51,
+"texture": SubResource("AtlasTexture_38mdi")
+}, {
+"duration": 0.51,
+"texture": SubResource("AtlasTexture_p4pq6")
+}, {
+"duration": 0.51,
+"texture": SubResource("AtlasTexture_k5uyl")
+}, {
+"duration": 0.51,
+"texture": SubResource("AtlasTexture_8uy56")
+}, {
+"duration": 0.51,
+"texture": SubResource("AtlasTexture_r5rnh")
+}, {
+"duration": 0.51,
+"texture": SubResource("AtlasTexture_uquno")
+}],
+"loop": true,
+"name": &"builder_work",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ljt1n")
@@ -810,6 +966,17 @@ visible = false
 position = Vector2(0, -21)
 texture = ExtResource("5_q2m8i")
 
+[node name="HungrySprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(7, -10)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("14_srsgg")
+
+[node name="BuildingSprite" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-1, -21)
+texture = ExtResource("4_36iv3")
+
 [node name="ArrowsAnimation" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_r2mqt")
@@ -817,13 +984,9 @@ libraries = {
 
 [node name="LitelAnimations" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ikjmv")
-animation = &"gatherer_ladder"
-
-[node name="HungrySprite" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(7, -10)
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("14_srsgg")
+animation = &"builder_work"
+frame = 4
+frame_progress = 0.7734616
 
 [node name="LadderComponent" type="Node" parent="."]
 script = ExtResource("3_8e0xl")
@@ -832,6 +995,12 @@ script = ExtResource("3_8e0xl")
 
 [node name="RoleComponent" type="Node" parent="."]
 script = ExtResource("16_uiw8g")
+
+[node name="BuilderComponent" type="Node" parent="."]
+script = ExtResource("19_t2dbf")
+
+[node name="BuildingTileDataComponent" type="Node" parent="."]
+script = ExtResource("21_hsu6w")
 
 [node name="WorkTimer" type="Timer" parent="."]
 

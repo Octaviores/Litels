@@ -8,7 +8,7 @@ signal resources_changed(team_id: int, resources: Dictionary)
 signal workers_changed(team_id: int, worker_amount: Dictionary)
 
 var resources_by_team := {
-	0: { "wood": 20, "stone": 20, "food": 20 },
+	0: { "wood": 200, "stone": 200, "food": 200 },
 	1: { "wood": 0, "stone": 0, "food": 0 }
 }
 

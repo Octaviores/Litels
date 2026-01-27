@@ -51,6 +51,7 @@ func set_role(new_role: Roles.Role) -> void:
 
 
 	litel.resource_sensor.force_raycast_update()
+	print("set role: ", litel.builder_component.build_type)
 	role_changed.emit(old, current_role)
 
 func _apply_role_mask(role: Roles.Role) -> void:

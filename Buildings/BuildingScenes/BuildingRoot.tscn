@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://r6x6xajjpyym"]
+
+[ext_resource type="Script" uid="uid://cjuhhw6urysxh" path="res://Buildings/BuildingsScripts/BuildingRoot/building_manager.gd" id="1_p2odg"]
+[ext_resource type="PackedScene" uid="uid://dj34okfpjuq7n" path="res://Buildings/BuildingScenes/BuildingSite.tscn" id="2_mlp4n"]
+[ext_resource type="PackedScene" uid="uid://crluj356rvrvd" path="res://Litels/LitelScenes/litel_spawner.tscn" id="3_p2odg"]
+
+[node name="BuildingRoot" type="Node2D" node_paths=PackedStringArray("site_container", "finished_container") groups=["building_manager"]]
+script = ExtResource("1_p2odg")
+site_container = NodePath("BuildingSiteContainer")
+building_site_scene = ExtResource("2_mlp4n")
+litel_spawner_scene = ExtResource("3_p2odg")
+finished_container = NodePath("FinishedContainer")
+
+[node name="BuildingSiteContainer" type="Node2D" parent="."]
+
+[node name="FinishedContainer" type="Node2D" parent="."]

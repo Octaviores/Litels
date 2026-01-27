@@ -13,7 +13,6 @@ const Roles = preload("res://LitelsUI/LitelsUIScript/roles.gd")
 
 func _ready():
 	ladder_tilemap = get_tree().get_first_node_in_group("ladder") as TileMapLayer
-
 func up_climbing():
 	litel.set_collision_mask_value(platform_layer, false)
 
@@ -23,7 +22,6 @@ func up_not_climbing():
 
 #Si está en la escalera, desactivo la colisión con la plataforma
 func entered_ladder():
-	print("escalera")
 	is_climbing = true
 	up_climbing()
 
@@ -59,8 +57,6 @@ func _update_ladder_state():
 	if tile_data == null:
 		exited_ladder()
 		return
-
-	# Obtengo el valor del CustomDataLayer "ladder_role"
 	var ladder_role: int = int(tile_data.get_custom_data("ladder_role"))
 	if ladder_role == null:
 		return
