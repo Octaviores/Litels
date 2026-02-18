@@ -1,52 +1,73 @@
 extends Control
-# Este script se encarga de dibujar el cuadro de seleccion
 
+const DRAG_THRESHOLD := 8.0
 
-var drawing := false                  # Flag para alternar entre modos (dibujo o no dibujo)
-var start_position = Vector2.ZERO    # Posición del inicio del dibujo
-var end_position = Vector2.ZERO     # Posición del Fin del dibujo
-var selection_rect : Rect2         # Para guardar el cuadro de seleccion
-var width = 0                     # Ancho de las lineas del cuadro
+var pending_click := false
+var dragging := false
+var start_pos := Vector2.ZERO
+var end_pos := Vector2.ZERO
+var rect := Rect2()
 
-
-#Función para limpiar dibujos viejos y crear nuevos
-func _draw():
-	var rect_position = start_position               # Posicion inicial del cuadro
-	var rect_size = end_position - start_position   # Tamaño del cuadro
-	
-	if rect_size.x <0:                            # El tamanio no puede ser negativo
-		rect_position.x += rect_size.x           # Reajusto la posición inicial
-		rect_size.x = abs(rect_size.x)
-	if rect_size.y <0:
-		rect_position.y += rect_size.y
-		rect_size.y = abs(rect_size.y)
-		
-	selection_rect = Rect2(rect_position,rect_size)      # Gauardo la posicion y tamaño del cuadro
-	draw_rect(selection_rect, Color.RED, false, width)  # Dibujo el cuadro
-
-
+func _ready():
+	set_process(false)
 
 func _unhandled_input(event: InputEvent) -> void:
-	
-	var hovered := get_viewport().gui_get_hovered_control()
-	if hovered != null:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			# bloquear solo inicio sobre UI
+			if get_viewport().gui_get_hovered_control() != null:
+				return
+			pending_click = true
+			dragging = false
+			start_pos = get_viewport().get_mouse_position()
+			end_pos = start_pos
+			set_process(true)
+		else:
+			# release
+			if dragging:
+				# terminar drag: limpiar dibujo
+				dragging = false
+				rect = Rect2()
+				queue_redraw()
+			# si era click (no drag), no hace nada :
+			# deja que el click del litel seleccione 1.
+			pending_click = false
+			set_process(false)
+
+func _process(_delta: float) -> void:
+	if not pending_click and not dragging:
 		return
-	
-	if event is InputEventMouseButton:
-		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:  # Click izquierdo activa el dibujado y setea el ancho de los bordes
-			width = 2
-			drawing = true
-			start_position = event.position
-			end_position = event.position
-		if event.is_released() and event.button_index == MOUSE_BUTTON_LEFT:  # Soltar el click izquierdo desactiva el dibujado, reseteando ancho y posición
-			width = 0
-			drawing = false
-			start_position = Vector2.ZERO
-			end_position = Vector2.ZERO
-			queue_redraw()                               # Llama a _draw() y y actualizo los elementos de dibujo
-	
-	if event is InputEventMouseMotion and drawing:      # Al mover el mouse, se actualiza la posición y los elementos de dibujo
-		end_position = event.position
+
+	end_pos = get_viewport().get_mouse_position()
+
+	if not dragging:
+		if start_pos.distance_to(end_pos) >= DRAG_THRESHOLD:
+			dragging = true
+
+	if dragging:
+		_update_rect()
+		LitelManager.selected_rect = rect
 		queue_redraw()
-		LitelManager.selected_rect = selection_rect    # le mando el tamaño y posición del cuadro al LittleManager
-	
+
+	# si la UI se come el release, se cierra igual
+	if pending_click and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		pending_click = false
+		dragging = false
+		rect = Rect2()
+		queue_redraw()
+		set_process(false)
+
+func _update_rect():
+	var pos := start_pos
+	var size := end_pos - start_pos
+	if size.x < 0:
+		pos.x += size.x
+		size.x = -size.x
+	if size.y < 0:
+		pos.y += size.y
+		size.y = -size.y
+	rect = Rect2(pos, size)
+
+func _draw() -> void:
+	if dragging and rect.size != Vector2.ZERO:
+		draw_rect(rect, Color.RED, false, 2)

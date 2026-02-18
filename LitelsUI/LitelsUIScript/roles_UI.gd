@@ -68,7 +68,7 @@ func _on_lumberjack_button_pressed() -> void:
 
 func _on_gatherer_button_pressed() -> void:
 	RoleManager.assign_role(Roles.Role.GATHERER, LitelManager.unit_selected, -1)
-			
+	
 func _on_miner_button_pressed() -> void:
 	RoleManager.assign_role(Roles.Role.MINER, LitelManager.unit_selected, -1)
 			

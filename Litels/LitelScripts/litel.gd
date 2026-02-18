@@ -88,6 +88,8 @@ func _ready():
 # ========================= LÓGICA DE MOVIMIENTO GENERAL =========================
 
 func _physics_process(delta: float) -> void:
+	
+
 	var anim_to_play := "litel_idle"
 	var current_role : int = role_component.current_role
 	
@@ -104,9 +106,9 @@ func _physics_process(delta: float) -> void:
 		if cell == build_stand_cell:
 			going_to_build = false
 			
-		var face_right := cell.x <= build_stand_cell.x
+		var face_right := cell.x >= build_stand_cell.x
 		# si no, camino hacia la stand_cell
-		if moving_right != face_right:
+		if moving_right == face_right:
 			turn() 
 			
 
@@ -235,15 +237,19 @@ func _update_selection_visual() -> void:
 	else:
 		building_sprite.visible = false
 		selection_sprite.visible = false
+		
 #Elegir 1 solo Litel
 func _on_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton:
 		if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 			set_leader(true)
+			get_viewport().set_input_as_handled()
 			for unit in LitelManager.unit_selected:
 				if unit != self:
 					unit.deselect()
 			LitelManager.unit_selected = [self]
+	
+
 			
 #Deseleccionar litels
 func _unhandled_input(event):

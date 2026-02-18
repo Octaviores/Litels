@@ -24,7 +24,8 @@ func check_unit():
 			unit.select()                                                 # La selecciono
 			unit_selected.append(unit)                                   # y la guardo en el array
 			unit.set_leader(false)
-			  
+
+		  
 	# Asignar 1 solo lider                           
 	if unit_selected.size()>0:
 		unit_selected[0].set_leader(true)

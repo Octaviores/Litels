@@ -984,9 +984,8 @@ libraries = {
 
 [node name="LitelAnimations" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ikjmv")
-animation = &"builder_work"
-frame = 4
-frame_progress = 0.7734616
+animation = &"litel_walk"
+autoplay = "litel_walk"
 
 [node name="LadderComponent" type="Node" parent="."]
 script = ExtResource("3_8e0xl")

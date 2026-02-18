@@ -17,7 +17,6 @@ func assign_role(role_id: int, litels: Array, b: int) -> void:
 	if litels.is_empty():
 		return
 	
-
 	# si el rol es distinto, all_have_role = false
 	var all_have_role := true
 	for u in litels:

@@ -22,7 +22,6 @@ func _ready() -> void:
 
 
 
-
 func _on_role_changed(_old_role, new_role) -> void:
 
 	if new_role == Roles.Role.BUILDER:
@@ -33,8 +32,7 @@ func _on_role_changed(_old_role, new_role) -> void:
 		# Si no es lider, no sirve. El site es null
 		if get_parent() != leader:
 			return
-
-
+			
 		var btd_component : Node= leader.get_node("BuildingTileDataComponent")
 		var leader_cell = btd_component.get_build_cell(build_type)
 		
@@ -44,7 +42,7 @@ func _on_role_changed(_old_role, new_role) -> void:
 			leader_cell,
 			leader
 		)
-
+		
 		if site != null:
 			_start_building()
 
@@ -59,7 +57,3 @@ func _start_building() -> void:
 func stop_building(u):
 	u.state = u.State.WALK
 	u.role_component.set_role(Roles.Role.NONE)
-
-		
-
-	
